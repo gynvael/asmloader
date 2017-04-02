@@ -8,15 +8,19 @@ What does this do (in short):
 +  Plus it provides a very minor API set.
 
 The `file.bin` should be pure machine code without any headers. The code will be loaded to a random page address + 0x200. In EBX/RBX register there will be a pointer to an array of functions:
-  `0 exit`
-  `1 putchar`
-  `2 getchar`
-  `3 printf`
-  `4 scanf`
+
+  0. `exit`
+  1. `putchar`
+  2. `getchar`
+  3. `printf`
+  4. `scanf`
+
 For this set of APIs please use a standard cdecl calling convention regardless of the platform (i.e. arguments to the stack, caller cleans the stack afterwards). Note that this includes the 64-bit platforms which usually make use of the fastcall convention (but asmloader has a set of wrappers to make the API consistent).
 
 If you would like to use the platform's default calling convention on 64-bits, note that the RCX register contains the same API table minus the converting wrappers, so just do:
+
   `MOV RBX, RCX`
+
 And you're set to go. Note that on 32-bit x86 cdecl is used all around anyway, so this is not required (and ECX contains the same value as EBX).
 
 For the record, platform-specific calling conventions:
