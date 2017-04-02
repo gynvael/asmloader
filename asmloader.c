@@ -74,7 +74,7 @@
 #include <stdbool.h>
 #ifdef _WIN32
 #  include <windows.h>
-#elif defined(__unix__)
+#elif defined(__unix__) || __APPLE__
 #  include <sys/mman.h>
 #endif
 
@@ -185,7 +185,7 @@ bool FileExtIs(const char *filename, const char *ext) {
   // Compare.
 #ifdef _WIN32
   return (bool)(stricmp(fileext, ext) == 0);  
-#elif defined(__unix__)
+#elif defined(__unix__) || __APPLE__
   return (bool)(strcasecmp(fileext, ext) == 0);
 #endif
 }
@@ -197,7 +197,7 @@ int main(int argc, char **argv) {
   size_t      size;
 #ifdef _WIN32
   typedef int (__cdecl *func_t)(void **);
-#elif defined(__unix__)
+#elif defined(__unix__) || __APPLE__
   typedef int (*func_t)(void **);
 #endif
   func_t      func;
